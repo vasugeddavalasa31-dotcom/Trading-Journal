@@ -40,8 +40,10 @@ Typical folder contents:
 
 Example external-drive setup:
 
-- `/Volumes/YourDrive/Trading Journal/journal.db`
-- `/Volumes/YourDrive/Trading Journal/images`
+- macOS: `/Volumes/YourDrive/Trading Journal/journal.db`
+- macOS: `/Volumes/YourDrive/Trading Journal/images`
+- Windows: `E:\Trading Journal\journal.db`
+- Windows: `E:\Trading Journal\images`
 
 ## Tech Stack
 
@@ -50,6 +52,11 @@ Example external-drive setup:
 - Electron
 - better-sqlite3
 - electron-builder
+
+## Requirements
+
+- Node.js 24+
+- npm 11+
 
 ## Local Development
 
@@ -99,6 +106,56 @@ The generated `.dmg` will be placed in:
 release/
 ```
 
+## Create a Windows EXE Installer
+
+Run this on a Windows machine:
+
+```bash
+npm install
+npm run dist:win
+```
+
+This builds a Windows installer using NSIS. The generated installer will be placed in:
+
+```bash
+release/
+```
+
+Expected output example:
+
+```bash
+release/Trading-Journal-Setup-0.0.0.exe
+```
+
+Important note:
+
+- build Windows installers on Windows
+- build macOS installers on macOS
+
+## How Windows Users Can Install and Use It
+
+1. Clone or download the project on a Windows computer.
+2. Open PowerShell or Command Prompt in the project folder.
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+4. Build the Windows installer:
+
+```bash
+npm run dist:win
+```
+
+5. Open the generated `.exe` from the `release` folder.
+6. Install the app like a normal Windows program.
+7. Launch `Trading Journal` from the Start Menu or desktop shortcut.
+8. Open `Settings`.
+9. Click `Choose folder`.
+10. Pick a local folder or an external drive folder for journal storage.
+11. Go back to `Journal` and start logging trades.
+
 ## How To Use
 
 1. Open the app.
@@ -133,3 +190,4 @@ This makes it easy to re-use the app for different brands or users.
 - The app is local-first.
 - If you use an external drive, keep it connected while using the journal.
 - If the drive is disconnected, the app will not be able to save until the folder is available again.
+- The current macOS build is unsigned, so macOS may show a first-open warning.
