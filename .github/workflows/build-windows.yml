@@ -1,16 +1,17 @@
-name: Build Windows EXE
+name: Build & Release Windows EXE
 
 on:
   push:
     branches: [main]
-    tags:
-      - 'v*'
-  pull_request:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.0.0)'
+        required: true
+        default: '1.0.0'
 
 jobs:
-  build-windows:
+  build-and-release:
     runs-on: windows-latest
 
     steps:
@@ -26,18 +27,63 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set version from input
+        if: github.event_name == 'workflow_dispatch'
+        run: npm version ${{ github.event.inputs.version }} --no-git-tag-version
+
       - name: Build Vite renderer
         run: npm run build
 
-      - name: Build Windows EXE (NSIS installer)
+      - name: Build Windows EXE
         run: npx electron-builder --win nsis
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload EXE artifact
+      - name: Find EXE file
+        id: find_exe
+        shell: bash
+        run: |
+          EXE_PATH=$(ls release/*.exe | head -1)
+          echo "exe_path=$EXE_PATH" >> $GITHUB_OUTPUT
+          echo "Found EXE: $EXE_PATH"
+
+      - name: Get version
+        id: get_version
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Create GitHub Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: Trading Journal v${{ steps.get_version.outputs.version }}
+          body: |
+            ## Trading Journal v${{ steps.get_version.outputs.version }}
+
+            ### Installation
+            1. Download `Trading-Journal-Setup-${{ steps.get_version.outputs.version }}.exe` below
+            2. Run the installer
+            3. Launch **Trading Journal** from your desktop or Start Menu
+
+            ### What's included
+            - Full trading journal with calendar workflow
+            - Trade tracking with P&L, emotions, and execution scores
+            - Image uploads for chart screenshots
+            - Theme customization (Clean Professional, Trading Desk, Minimal Light)
+          files: ${{ steps.find_exe.outputs.exe_path }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload EXE as artifact (for non-release builds)
         uses: actions/upload-artifact@v4
         with:
-          name: Trading-Journal-Windows
+          name: Trading-Journal-Windows-v${{ steps.get_version.outputs.version }}
           path: release/*.exe
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 7
