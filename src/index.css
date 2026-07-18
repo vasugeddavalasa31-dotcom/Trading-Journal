@@ -1,0 +1,120 @@
+:root {
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-display: 'Space Grotesk', 'Avenir Next', sans-serif;
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 26%),
+    var(--app-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root,
+:root[data-theme='forest'] {
+  --app-bg: #081310;
+  --surface: rgba(10, 27, 22, 0.85);
+  --surface-strong: rgba(19, 44, 36, 0.88);
+  --input-bg: rgba(7, 20, 17, 0.9);
+  --text: #eef6f0;
+  --text-muted: #93ac9f;
+  --border: rgba(167, 205, 187, 0.12);
+  --border-strong: rgba(167, 205, 187, 0.3);
+  --accent: #9fe870;
+  --accent-soft: rgba(159, 232, 112, 0.15);
+  --accent-contrast: #0d160f;
+  --ring: rgba(159, 232, 112, 0.2);
+  --danger: #ff8c77;
+  --glow: rgba(159, 232, 112, 0.28);
+  --shadow-soft: 0 28px 70px rgba(0, 0, 0, 0.28);
+  --shadow-accent: 0 16px 36px rgba(159, 232, 112, 0.22);
+}
+
+:root[data-theme='ember'] {
+  --app-bg: #120b0b;
+  --surface: rgba(22, 11, 11, 0.88);
+  --surface-strong: rgba(46, 19, 19, 0.92);
+  --input-bg: rgba(17, 9, 9, 0.95);
+  --text: #fff1ef;
+  --text-muted: #c5a4a1;
+  --border: rgba(255, 155, 145, 0.12);
+  --border-strong: rgba(255, 155, 145, 0.34);
+  --accent: #ff6b57;
+  --accent-soft: rgba(255, 107, 87, 0.14);
+  --accent-contrast: #170d0d;
+  --ring: rgba(255, 107, 87, 0.22);
+  --danger: #ff8b7a;
+  --glow: rgba(255, 107, 87, 0.22);
+  --shadow-soft: 0 28px 70px rgba(0, 0, 0, 0.32);
+  --shadow-accent: 0 18px 36px rgba(255, 107, 87, 0.22);
+}
+
+:root[data-theme='mist'] {
+  --app-bg: #eaf1f7;
+  --surface: rgba(255, 255, 255, 0.82);
+  --surface-strong: rgba(245, 248, 252, 0.95);
+  --input-bg: rgba(247, 250, 253, 0.98);
+  --text: #173247;
+  --text-muted: #5b7387;
+  --border: rgba(54, 91, 120, 0.12);
+  --border-strong: rgba(54, 91, 120, 0.25);
+  --accent: #3d7296;
+  --accent-soft: rgba(61, 114, 150, 0.12);
+  --accent-contrast: #f4f8fb;
+  --ring: rgba(61, 114, 150, 0.18);
+  --danger: #ba5b51;
+  --glow: rgba(61, 114, 150, 0.18);
+  --shadow-soft: 0 22px 60px rgba(76, 105, 133, 0.14);
+  --shadow-accent: 0 16px 34px rgba(61, 114, 150, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, var(--glow), transparent 22%),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent 18%),
+    var(--app-bg);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0.025) 1px,
+    transparent 1px
+  );
+  background-size: 100% 40px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 80%);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
